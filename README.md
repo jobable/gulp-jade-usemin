@@ -4,7 +4,7 @@
 This task is designed for gulp 3.
 > Attention: v0.3.0 options does not compatible with v0.2.0.
 
-## Usage
+## Basic Usage
 
 First, install `gulp-jade-usemin` as a development dependency:
 
@@ -45,6 +45,72 @@ block scripts
     script(src='/js/script1.js')
     script(src='/js/script2.js')
 //- endbuild
+```
+
+## Options
+### assetsBasePath
+jade assets base url
+Usage:
+```javascript
+gulp.task('usemin', function() {
+  gulp.src('./*.jade')
+    .pipe(usemin({
+      assetsBasePath: 'ASSETS/BASEPATH'
+      js: [uglify()]
+    }))
+    .pipe(gulp.dest('build/'));
+});
+```
+
+```jade
+//- build:js /js/app.js
+block scripts
+    script(src='/js/script1.js')
+    script(src='/js/script2.js')
+//- endbuild
+```
+Output
+```jade
+ script(type='text/javascript', src='ASSETS/BASEPATH/js/app.js')
+```
+
+### outputBasePath
+assets output basepath
+
+```javascript
+gulp.task('usemin', function() {
+  gulp.src('./*.jade')
+    .pipe(usemin({
+      outputBasePath: '../public'
+      js: [uglify()]
+    }))
+    .pipe(gulp.dest('build/'));
+});
+```
+
+```jade
+//- build:js /js/app.js
+block scripts
+    script(src='/js/script1.js')
+    script(src='/js/script2.js')
+//- endbuil
+```
+
+Output
+```
+|
++- app
+|   +- index.html
+|   +- assets
+|       +- js
+|          +- script1.js
+|          +- script1.js
++- build
+|   +- index.html
++- public
+|     +- js
+|         +- app.js <- output file
++- gulpfile.json
 ```
 
 ## Changelog
