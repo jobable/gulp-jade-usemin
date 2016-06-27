@@ -94,7 +94,7 @@ block scripts
     block scripts
         script(src='/js/script1.js')
         script(src='/js/script2.js')
-    //- endbuil
+    //- endbuild
     ```
     
     Output:
