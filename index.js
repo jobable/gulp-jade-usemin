@@ -31,8 +31,8 @@ module.exports = function(options) {
     var filePath = path.join(path.relative(basePath, mainPath), name);
       var isStatic = name.split('.').pop() === 'js' || name.split('.').pop() === 'css';
 
-      if (options.outputRelativePath && isStatic)
-        filePath = options.outputRelativePath + name;
+      if (options.outputBasePath && isStatic)
+        filePath = path.join(options.outputBasePath, name);
 
     return new gutil.File({
       path: filePath,
@@ -150,14 +150,14 @@ module.exports = function(options) {
 
     function jsRegPush(name, file) {
       push(file);
-      name = options.outputRelativePath ? path.join(options.outputRelativePath, name) : name;
+      name = options.assetsBasePath ? path.join(options.assetsBasePath, name) : name;
       if (path.extname(file.path) === '.js')
         jade.push('script(' + renderAttributes(section[5], name.replace(path.basename(name), path.basename(file.path))) + ' )');
     }
 
     function cssRegPush(name, file) {
       push(file);
-      name = options.outputRelativePath ? path.join(options.outputRelativePath, name) : name;
+      name = options.assetsBasePath ? path.join(options.assetsBasePath, name) : name;
       if (path.extname(file.path) === '.css')
         jade.push('link(' + renderAttributes(section[5], name.replace(path.basename(name), path.basename(file.path))) + ' )');
     }
@@ -168,7 +168,7 @@ module.exports = function(options) {
         if(options.assetsDir){
           var file = finder.from(options.assetsDir).findFirst().findFiles(masked);
           if(file) {
-            var revved = file.replace(options.assetsDir, options.outputRelativePath ? options.outputRelativePath : '');
+            var revved = file.replace(options.assetsDir, options.assetsBasePath ? options.assetsBasePath : '');
             sections[i] = sections[i].replace(src, revved);
           }
         }
