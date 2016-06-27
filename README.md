@@ -49,6 +49,7 @@ block scripts
 
 ## Options
 -  `assetsBasePath`: jade assets base url
+
     Usage:
     ```javascript
     gulp.task('usemin', function() {
@@ -68,12 +69,14 @@ block scripts
         script(src='/js/script2.js')
     //- endbuild
     ```
-    Output
+    
+    Output:
     ```jade
      script(type='text/javascript', src='ASSETS/BASEPATH/js/app.js')
     ```
 
 -  `outputBasePath`: assets output basepath
+
     Usage:
     ```javascript
     gulp.task('usemin', function() {
@@ -94,7 +97,7 @@ block scripts
     //- endbuil
     ```
     
-    Output
+    Output:
     ```
     |
     +- app
