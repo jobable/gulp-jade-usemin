@@ -48,68 +48,68 @@ block scripts
 ```
 
 ## Options
--  assetsBasePath: jade assets base url
-  Usage:
-  ```javascript
-  gulp.task('usemin', function() {
-    gulp.src('./*.jade')
-      .pipe(usemin({
-        assetsBasePath: 'ASSETS/BASEPATH'
-        js: [uglify()]
-      }))
-      .pipe(gulp.dest('build/'));
-  });
-  ```
-  
-  ```jade
-  //- build:js /js/app.js
-  block scripts
-      script(src='/js/script1.js')
-      script(src='/js/script2.js')
-  //- endbuild
-  ```
-  Output
-  ```jade
-   script(type='text/javascript', src='ASSETS/BASEPATH/js/app.js')
-  ```
+-  `assetsBasePath`: jade assets base url
+    Usage:
+    ```javascript
+    gulp.task('usemin', function() {
+      gulp.src('./*.jade')
+        .pipe(usemin({
+          assetsBasePath: 'ASSETS/BASEPATH'
+          js: [uglify()]
+        }))
+        .pipe(gulp.dest('build/'));
+    });
+    ```
+    
+    ```jade
+    //- build:js /js/app.js
+    block scripts
+        script(src='/js/script1.js')
+        script(src='/js/script2.js')
+    //- endbuild
+    ```
+    Output
+    ```jade
+     script(type='text/javascript', src='ASSETS/BASEPATH/js/app.js')
+    ```
 
-- outputBasePath: assets output basepath
-
-  ```javascript
-  gulp.task('usemin', function() {
-    gulp.src('./*.jade')
-      .pipe(usemin({
-        outputBasePath: '../public'
-        js: [uglify()]
-      }))
-      .pipe(gulp.dest('build/'));
-  });
-  ```
-  
-  ```jade
-  //- build:js /js/app.js
-  block scripts
-      script(src='/js/script1.js')
-      script(src='/js/script2.js')
-  //- endbuil
-  ```
-  
-  Output
-  ```
-  |
-  +- app
-  |   +- index.html
-  |   +- assets
-  |       +- js
-  |          +- script1.js
-  |          +- script1.js
-  +- build
-  |   +- index.html
-  +- public
-  |     +- js
-  |         +- app.js <- output file
-  +- gulpfile.json
-  ```
+-  `outputBasePath`: assets output basepath
+    Usage:
+    ```javascript
+    gulp.task('usemin', function() {
+      gulp.src('./*.jade')
+        .pipe(usemin({
+          outputBasePath: '../public'
+          js: [uglify()]
+        }))
+        .pipe(gulp.dest('build/'));
+    });
+    ```
+    
+    ```jade
+    //- build:js /js/app.js
+    block scripts
+        script(src='/js/script1.js')
+        script(src='/js/script2.js')
+    //- endbuil
+    ```
+    
+    Output
+    ```
+    |
+    +- app
+    |   +- index.html
+    |   +- assets
+    |       +- js
+    |          +- script1.js
+    |          +- script1.js
+    +- build
+    |   +- index.html
+    +- public
+    |     +- js
+    |         +- app.js <- output file
+    +- gulpfile.json
+    ```
 
 ## Changelog
 
