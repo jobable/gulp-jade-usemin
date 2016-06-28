@@ -113,6 +113,33 @@ block scripts
     |         +- app.js <- output file
     +- gulpfile.json
     ```
+    
+- `md5ParamKey`: add md5 url params (mostly for url versioning)
+
+    Usage:
+    ```javascript
+    gulp.task('usemin', function() {
+      gulp.src('./*.jade')
+        .pipe(usemin({
+          md5ParamKey: 'v',
+          js: [uglify()]
+        }))
+        .pipe(gulp.dest('build/'));
+    });
+    ```
+    
+    ```jade
+    //- build:js /js/app.js
+    block scripts
+        script(src='/js/script1.js')
+        script(src='/js/script2.js')
+    //- endbuild
+    ```
+    
+    Output:
+    ```jade
+     script(type='text/javascript', src='/js/app.js?v=FIRST_SEVEN_LETTERS_OF_MD5')
+    ```
 
 ## Changelog
 
