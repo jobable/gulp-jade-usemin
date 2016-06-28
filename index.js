@@ -6,6 +6,9 @@ var EOL = require('os').EOL;
 var through = require('through2');
 var gutil = require('gulp-util');
 var glob = require('glob');
+var md5 = require('md5');
+
+var MD5_PARAMS_LENGTH = 7;
 
 module.exports = function(options) {
   options = options || {};
@@ -29,10 +32,11 @@ module.exports = function(options) {
 
   function createFile(name, content) {
     var filePath = path.join(path.relative(basePath, mainPath), name);
-      var isStatic = name.split('.').pop() === 'js' || name.split('.').pop() === 'css';
+    var isStatic = name.split('.').pop() === 'js' || name.split('.').pop() === 'css';
 
-      if (options.outputBasePath && isStatic)
-        filePath = path.join(options.outputBasePath, name);
+    if (options.outputBasePath && isStatic) {
+      filePath = path.join(options.outputBasePath, name);
+    }
 
     return new gutil.File({
       path: filePath,
@@ -147,10 +151,10 @@ module.exports = function(options) {
   function processJade(content, push, callback) {
     var jade = [];
     var sections = content.split(endReg);
-    var urlParams = (options.queryStrings) ?  convertURLParams(options.queryStrings) : '';
 
     function jsRegPush(name, file) {
       push(file);
+      var urlParams = getURLString(options, file);
       name = options.assetsBasePath ? path.join(options.assetsBasePath, name) : name;
       if (path.extname(file.path) === '.js')
         jade.push('script(' + renderAttributes(section[5], name.replace(path.basename(name), path.basename(file.path)) + urlParams) + ' )');
@@ -158,6 +162,7 @@ module.exports = function(options) {
 
     function cssRegPush(name, file) {
       push(file);
+      var urlParams = getURLString(options, file);
       name = options.assetsBasePath ? path.join(options.assetsBasePath, name) : name;
       if (path.extname(file.path) === '.css')
         jade.push('link(' + renderAttributes(section[5], name.replace(path.basename(name), path.basename(file.path)) + urlParams) + ' )');
@@ -234,10 +239,21 @@ module.exports = function(options) {
 };
 
 /**
+ * @param {Object} options
+ * @param {Object} file
+ * return {string}
+ */
+function getURLString(options, file) {
+  var queryStrings = Object.assign({}, options.queryStrings || {});
+  if (options.md5ParamKey) queryStrings[options.md5ParamKey] = md5(file.contents).substring(0, MD5_PARAMS_LENGTH);
+  return convertURLString(queryStrings);
+}
+
+/**
  * @param {Object} obj
  * return {string}
  */
-function convertURLParams(obj) {
+function convertURLString(obj) {
   var params = Object.keys(obj).map(key => {
     return `${key}=${obj[key]}`
   }).join('&');
