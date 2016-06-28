@@ -147,19 +147,20 @@ module.exports = function(options) {
   function processJade(content, push, callback) {
     var jade = [];
     var sections = content.split(endReg);
+    var urlParams = (options.queryStrings) ?  convertURLParams(options.queryStrings) : '';
 
     function jsRegPush(name, file) {
       push(file);
       name = options.assetsBasePath ? path.join(options.assetsBasePath, name) : name;
       if (path.extname(file.path) === '.js')
-        jade.push('script(' + renderAttributes(section[5], name.replace(path.basename(name), path.basename(file.path))) + ' )');
+        jade.push('script(' + renderAttributes(section[5], name.replace(path.basename(name), path.basename(file.path)) + urlParams) + ' )');
     }
 
     function cssRegPush(name, file) {
       push(file);
       name = options.assetsBasePath ? path.join(options.assetsBasePath, name) : name;
       if (path.extname(file.path) === '.css')
-        jade.push('link(' + renderAttributes(section[5], name.replace(path.basename(name), path.basename(file.path))) + ' )');
+        jade.push('link(' + renderAttributes(section[5], name.replace(path.basename(name), path.basename(file.path)) + urlParams) + ' )');
     }
 
     function patternReplace(pattern) {
@@ -231,3 +232,15 @@ module.exports = function(options) {
     }
   });
 };
+
+/**
+ * @param {Object} obj
+ * return {string}
+ */
+function convertURLParams(obj) {
+  var params = Object.keys(obj).map(key => {
+    return `${key}=${obj[key]}`
+  }).join('&');
+
+  return (params) ? '?' + params : '';
+}
