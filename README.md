@@ -2,6 +2,7 @@
 > Replaces references to non-optimized scripts or stylesheets into a set of Jade files (or any templates/views).
 
 This task is designed for gulp 3.
+> Additinal tasks `js: [gulpTask()]` is not compatable with gulp task that uses `readable-stream/transform`, only tested and worked for those based on `through2`
 > Attention: v0.3.0 options does not compatible with v0.2.0.
 
 ## Basic Usage
@@ -16,17 +17,13 @@ Then, add it to your `gulpfile.js`:
 
 ```javascript
 var usemin = require('gulp-jade-usemin');
-var uglify = require('gulp-uglify');
-var minifyHtml = require('gulp-minify-html');
-var minifyCss = require('gulp-minify-css');
-var rev = require('gulp-rev');
+var uglify = require('gulp-minifier');
 
 gulp.task('usemin', function() {
   gulp.src('./*.jade')
     .pipe(usemin({
-      css: [minifyCss(), 'concat'],
-      html: [minifyHtml({empty: true})],
-      js: [uglify(), rev()]
+      css: [minifier({ minify: true, minifyCSS: true }), 'concat'],
+      js:  [minifier({ minify: true, minifyJS: true })]
     }))
     .pipe(gulp.dest('build/'));
 });
@@ -56,7 +53,7 @@ block scripts
       gulp.src('./*.jade')
         .pipe(usemin({
           assetsBasePath: 'ASSETS/BASEPATH'
-          js: [uglify()]
+          js: [minifier({ minify: true, minifyJS: true })]
         }))
         .pipe(gulp.dest('build/'));
     });
@@ -83,7 +80,7 @@ block scripts
       gulp.src('./*.jade')
         .pipe(usemin({
           outputBasePath: '../public'
-          js: [uglify()]
+          js: [minifier({ minify: true, minifyJS: true })]
         }))
         .pipe(gulp.dest('build/'));
     });
@@ -122,7 +119,7 @@ block scripts
       gulp.src('./*.jade')
         .pipe(usemin({
           md5ParamKey: 'v',
-          js: [uglify()]
+          js: [minifier({ minify: true, minifyJS: true })]
         }))
         .pipe(gulp.dest('build/'));
     });
