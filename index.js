@@ -155,7 +155,7 @@ module.exports = function(options) {
     function jsRegPush(name, file) {
       push(file);
       var urlParams = getURLString(options, file);
-      name = options.assetsBasePath ? options.assetsBasePath + name : name;
+      name = options.assetsBasePath ? joinPath(options.assetsBasePath, name) : name;
       if (path.extname(file.path) === '.js')
         jade.push('script(' + renderAttributes(section[5], name.replace(path.basename(name), path.basename(file.path)) + urlParams) + ' )');
     }
@@ -163,7 +163,7 @@ module.exports = function(options) {
     function cssRegPush(name, file) {
       push(file);
       var urlParams = getURLString(options, file);
-      name = options.assetsBasePath ? options.assetsBasePath + name : name;
+      name = options.assetsBasePath ? joinPath(options.assetsBasePath, name) : name;
       if (path.extname(file.path) === '.css')
         jade.push('link(' + renderAttributes(section[5], name.replace(path.basename(name), path.basename(file.path)) + urlParams) + ' )');
     }
@@ -237,6 +237,17 @@ module.exports = function(options) {
     }
   });
 };
+
+/**
+ * @param {string} urlFirst
+ * @param {string} urlSecond
+ * @returns {string}
+ */
+function joinPath(urlFirst, urlSecond) {
+  urlFirst =  (urlFirst.charAt(urlFirst.length - 1)) ? urlFirst.substr(0, urlFirst.length - 1) : urlFirst;
+  urlSecond = (urlSecond.charAt(0) === '/') ? urlSecond.substr(1) : urlSecond;
+  return `${urlFirst}/${urlSecond}`;
+}
 
 /**
  * @param {Object} options
