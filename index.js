@@ -244,7 +244,7 @@ module.exports = function(options) {
  * @returns {string}
  */
 function joinPath(urlFirst, urlSecond) {
-  urlFirst =  (urlFirst.charAt(urlFirst.length - 1)) ? urlFirst.substr(0, urlFirst.length - 1) : urlFirst;
+  urlFirst =  (urlFirst.charAt(urlFirst.length - 1) === '/') ? urlFirst.substr(0, urlFirst.length - 1) : urlFirst;
   urlSecond = (urlSecond.charAt(0) === '/') ? urlSecond.substr(1) : urlSecond;
   return `${urlFirst}/${urlSecond}`;
 }
