@@ -155,7 +155,7 @@ module.exports = function(options) {
     function jsRegPush(name, file) {
       push(file);
       var urlParams = getURLString(options, file);
-      name = options.assetsBasePath ? path.join(options.assetsBasePath, name) : name;
+      name = options.assetsBasePath ? options.assetsBasePath + name : name;
       if (path.extname(file.path) === '.js')
         jade.push('script(' + renderAttributes(section[5], name.replace(path.basename(name), path.basename(file.path)) + urlParams) + ' )');
     }
@@ -163,7 +163,7 @@ module.exports = function(options) {
     function cssRegPush(name, file) {
       push(file);
       var urlParams = getURLString(options, file);
-      name = options.assetsBasePath ? path.join(options.assetsBasePath, name) : name;
+      name = options.assetsBasePath ? options.assetsBasePath + name : name;
       if (path.extname(file.path) === '.css')
         jade.push('link(' + renderAttributes(section[5], name.replace(path.basename(name), path.basename(file.path)) + urlParams) + ' )');
     }
